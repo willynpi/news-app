@@ -5,7 +5,7 @@ from .models import NewsUnit
 
 class NewsUnitAdmin(admin.ModelAdmin):
     list_display =('category', 'title', 'author', 'pubtime', 'enabled', 'press')
-    
+    readonly_fields = ['press']
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "author":
             return AuthorChoiceField(queryset=User.objects.all())

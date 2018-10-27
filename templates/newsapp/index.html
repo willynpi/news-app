@@ -1,14 +1,41 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="news-list">
-        {% for item in news %}
-            <div class="item">
-                <div class="category">{{ item.category }}</div>
-                <div class="title">{{ item.title }}</div>
-                <div class="publish">{{ item.pubtime }}</div>
-                <div class="author">{{ item.author }}</div>
-                <div class="press">{{ item.press }}</div>
-            </div>
-        {% endfor %}
-    </div>
+    <table class="table border-0 mt-5 table-hover text-center">
+        <thead class="table-info border-0 table-borderless">
+            <tr>
+                <th scope="col">類別</th>
+                <th scope="col">標題</th>
+                <th scope="col">發布時間</th>
+                <th scope="col">發布者</th>
+                <th scope="col">點閱率</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in news %}
+            <tr data-id="{{ item.id }}">
+                <td>
+                    <span class="badge badge-primary">{{ item.category }}</span>
+                </td>
+                <td>{{ item.title }}</td>
+                {% with item.pubtime as pubtime %}
+                <td>{{ pubtime|date:'Y/m/d H:m' }}</td>
+                {% endwith %}
+                <td>{{ item.author }}</td>
+                <td>{{ item.press }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
+{% block script %}
+<script>
+    const tr = document.querySelectorAll('tr');
+    tr.forEach(item => {
+        item.addEventListener('click', (e)=>{
+            const news_id = item.dataset.id;
+            window.location = `/news/${news_id}`;
+        });
+    });
+</script>
+{% endblock %}
+
